@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: boz.electron
+appId: br.com.agenciaboz.app
+productName: Boz
 directories:
   buildResources: build
 files:
@@ -13,7 +13,7 @@ asarUnpack:
   - resources/**
 afterSign: build/notarize.js
 win:
-  executableName: Boz App
+  executableName: Boz
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -33,7 +33,7 @@ linux:
     - AppImage
     - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: agenciaboz.com.br
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}

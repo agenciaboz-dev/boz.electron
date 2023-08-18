@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import AutoLaunch from 'electron-auto-launch'
 
 function createWindow(): void {
   // Create the browser window.
@@ -9,7 +10,7 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
-      autoHideMenuBar: true,
+    autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -19,6 +20,7 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
+    mainWindow.maximize()
     mainWindow.show()
   })
 
@@ -40,8 +42,17 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  const autoLauncher = new AutoLaunch({
+    name: 'YourApp',
+    path: app.getPath('exe')
+  })
+
+  autoLauncher.isEnabled().then((isEnabled) => {
+    if (!isEnabled) autoLauncher.enable()
+  })
+
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('br.com.agenciaboz.app')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
