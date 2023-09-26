@@ -29,6 +29,9 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+  //   this forces reload ignoring cache, when called
+  //   mainWindow.webContents.reloadIgnoringCache()
+
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
@@ -43,7 +46,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   const autoLauncher = new AutoLaunch({
-    name: 'YourApp',
+    name: 'Boz',
     path: app.getPath('exe')
   })
 
