@@ -64,7 +64,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  ipcMain.handle('version', (event) => app.getVersion())
+  ipcMain.handle('version', () => app.getVersion())
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
