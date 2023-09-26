@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { serverUrl } from './serverUrl'
 
 function createWindow(): void {
   // Create the browser window.
@@ -37,7 +38,7 @@ function createWindow(): void {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
     // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-    mainWindow.loadURL('https://app.agenciaboz.com.br')
+    mainWindow.loadURL(serverUrl)
   }
 }
 
