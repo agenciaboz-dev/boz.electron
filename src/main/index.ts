@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { serverUrl } from './serverUrl'
 
-function createWindow(): void {
+const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -40,6 +40,8 @@ function createWindow(): void {
     // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     mainWindow.loadURL(serverUrl)
   }
+
+  return mainWindow
 }
 
 // This method will be called when Electron has finished
@@ -82,3 +84,8 @@ app.on('window-all-closed', () => {
 app.setLoginItemSettings({
   openAtLogin: true
 })
+
+let isSingleInstance = app.requestSingleInstanceLock()
+if (!isSingleInstance) {
+  app.quit()
+}
