@@ -35,8 +35,8 @@ const createWindow = () => {
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  if (is.dev) {
+    mainWindow.loadURL('http://localhost:5173')
   } else {
     // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     mainWindow.loadURL(serverUrl)
@@ -68,6 +68,8 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('version', () => ipcHandler.version(app))
+
+  ipcMain.handle('google:auth', () => ipcHandler.googleAuth())
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -90,3 +92,5 @@ let isSingleInstance = app.requestSingleInstanceLock()
 if (!isSingleInstance) {
   app.quit()
 }
+
+app.setAsDefaultProtocolClient('bozapp')
