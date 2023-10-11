@@ -3,14 +3,19 @@ import { google } from 'googleapis'
 
 const version = (app: Electron.App) => app.getVersion()
 
-const oauth2Client = new google.auth.OAuth2(
-  '258639917596-glojms88bv4mr3cbdsk0t66vs839t6ju.apps.googleusercontent.com', // client id
-  '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', // client secret
-  'electron-app-auth://oauth-callback' // redirect uri
-)
+const { protocol } = require('electron')
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'electron-app-auth',
+    privileges: {
+      secure: true,
+      standard: true
+    }
+  }
+])
 
 const googleAuth = async () => {
-  console.log('starting google auth process')
   const SCOPES = [
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/contacts',
@@ -19,10 +24,15 @@ const googleAuth = async () => {
     'https://www.googleapis.com/auth/gmail.modify'
   ]
 
+  const oauth2Client = new google.auth.OAuth2(
+    '258639917596-glojms88bv4mr3cbdsk0t66vs839t6ju.apps.googleusercontent.com', // client id
+    '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', // client secret
+    'electron-app-auth://oauth-callback' // redirect uri
+  )
+
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: SCOPES,
-    redirect_uri: 'electron-app-auth://oauth-callback' // Use the custom URI here
+    scope: SCOPES
   })
 
   const win = new BrowserWindow({
@@ -34,32 +44,30 @@ const googleAuth = async () => {
   })
 
   win.loadURL(authUrl)
-  win.on('closed', () => {
-    // Handle window close
-  })
+  try {
+    const url = await new Promise<string>((resolve) => {
+      win.webContents.on('will-navigate', (_event, url) => {
+        resolve(url)
+      })
+    })
 
-  win.webContents.on('will-navigate', (event, url) => {
-    if (url.startsWith('electron-app-auth://oauth-callback')) {
+    if (url.startsWith('https://app.agenciaboz.com.br')) {
       const code = new URL(url).searchParams.get('code')
       if (code) {
-        oauth2Client.getToken(code, (err, tokens) => {
-          if (err) {
-            console.error('Error retrieving tokens', err)
-            return
-          }
-          if (tokens) {
-            oauth2Client.setCredentials(tokens)
-          }
+        const { tokens } = await oauth2Client.getToken(code)
+        oauth2Client.setCredentials(tokens)
 
-          // Here you can now use the oauth2Client for further API calls
-          console.log(tokens)
-          return tokens
-        })
+        // Handle successful authentication
+        console.log('Authentication successful:', tokens)
+        return tokens
       }
-      event.preventDefault()
-      win.close()
     }
-  })
+  } catch (error) {
+    console.error('Authentication error:', error)
+  } finally {
+    win.close()
+  }
+  return false
 }
 
-export default { version, googleAuth }
+export default { googleAuth, version }
