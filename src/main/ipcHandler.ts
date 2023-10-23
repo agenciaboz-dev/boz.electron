@@ -22,7 +22,7 @@ const googleAuth = async () => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
-    redirect_uri: 'electron-app-auth://oauth-callback' // Use the custom URI here
+    redirect_uri: 'http://localhost:5173' // Use the custom URI here
   })
 
   const win = new BrowserWindow({

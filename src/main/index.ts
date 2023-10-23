@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { serverUrl } from './serverUrl'
 import ipcHandler from './ipcHandler'
+import wakeup from './wakeup'
 
 const createWindow = () => {
   // Create the browser window.
@@ -70,6 +71,10 @@ app.whenReady().then(() => {
   ipcMain.handle('version', () => ipcHandler.version(app))
 
   ipcMain.handle('google:auth', () => ipcHandler.googleAuth())
+
+  ipcMain.handle('wakeup:request', (_, url, method, payload) =>
+    wakeup.request(url, method, payload)
+  )
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -94,3 +99,7 @@ if (!isSingleInstance) {
 }
 
 app.setAsDefaultProtocolClient('bozapp')
+
+app.on('open-url', (ev, data) => {
+  console.log(`response from front-end`, data)
+})
