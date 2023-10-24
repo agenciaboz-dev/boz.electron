@@ -60,7 +60,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  createWindow()
+  const window = createWindow()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -75,6 +75,10 @@ app.whenReady().then(() => {
   ipcMain.handle('wakeup:request', (_, url, method, payload) =>
     wakeup.request(url, method, payload)
   )
+
+  ipcMain.handle('wakeup:socket:connect', (_, api) => wakeup.connect(api, window))
+  ipcMain.handle('wakeup:socket:disconnect', () => wakeup.disconnect())
+  ipcMain.handle('wakeup:socket:send', (_, data) => wakeup.send(data.event, data.message))
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -103,3 +107,4 @@ app.setAsDefaultProtocolClient('bozapp')
 app.on('open-url', (_, data) => {
   console.log(`response from front-end`, data)
 })
+
