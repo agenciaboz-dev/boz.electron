@@ -26,6 +26,7 @@ const send = async (event: string, message: any) => {
 
     return { event, message }
   }
+    return { error: true }
 }
 
 const connect = async (
