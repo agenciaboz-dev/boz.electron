@@ -40,7 +40,7 @@ const googleAuth = () => {
       resolve(null)
     })
 
-    win.webContents.on('did-navigate', (event, url) => {
+    win.webContents.on('did-navigate', (_, url) => {
       if (url.startsWith('http://localhost:5173')) {
         const code = new URL(url).searchParams.get('code')
         if (code) {
