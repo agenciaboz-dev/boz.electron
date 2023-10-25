@@ -102,9 +102,3 @@ if (!isSingleInstance) {
   app.quit()
 }
 
-app.setAsDefaultProtocolClient('bozapp')
-
-app.on('open-url', (_, data) => {
-  console.log(`response from front-end`, data)
-})
-

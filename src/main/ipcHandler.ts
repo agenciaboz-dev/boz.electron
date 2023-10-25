@@ -37,6 +37,7 @@ const googleAuth = () => {
     win.loadURL(authUrl)
     win.on('closed', () => {
       console.log('finished google auth process')
+      resolve(null)
     })
 
     win.webContents.on('did-navigate', (event, url) => {
