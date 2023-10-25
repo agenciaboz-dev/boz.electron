@@ -6,7 +6,7 @@ const version = (app: Electron.App) => app.getVersion()
 const oauth2Client = new google.auth.OAuth2(
   '258639917596-glojms88bv4mr3cbdsk0t66vs839t6ju.apps.googleusercontent.com', // client id
   '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', // client secret
-  'http://localhost:5173' // redirect uri
+  'https://app.agenciaboz.com.br' // redirect uri
 )
 
 const googleAuth = () => {
@@ -23,7 +23,7 @@ const googleAuth = () => {
     const authUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES,
-      redirect_uri: 'http://localhost:5173' // Use the custom URI here
+      redirect_uri: 'https://app.agenciaboz.com.br' // Use the custom URI here
     })
 
     const win = new BrowserWindow({
@@ -41,7 +41,7 @@ const googleAuth = () => {
     })
 
     win.webContents.on('did-navigate', (_, url) => {
-      if (url.startsWith('http://localhost:5173')) {
+      if (url.startsWith('https://app.agenciaboz.com.br')) {
         const code = new URL(url).searchParams.get('code')
         if (code) {
           oauth2Client.getToken(code, (err, tokens) => {
