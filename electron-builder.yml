@@ -30,8 +30,8 @@ dmg:
   artifactName: ${productName}-${version}.${ext}
 linux:
   target:
-    - AppImage
-    - snap
+    # - AppImage
+    # - snap
     - deb
   maintainer: agenciaboz.com.br
   category: Utility
