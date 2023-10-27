@@ -22,6 +22,7 @@ const googleAuth = () => {
 
     const authUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
+      prompt: 'consent',
       scope: SCOPES,
       redirect_uri: 'https://app.agenciaboz.com.br' // Use the custom URI here
     })
@@ -44,19 +45,21 @@ const googleAuth = () => {
       if (url.startsWith('https://app.agenciaboz.com.br')) {
         const code = new URL(url).searchParams.get('code')
         if (code) {
-          oauth2Client.getToken(code, (err, tokens) => {
-            if (err) {
-              console.error('Error retrieving tokens', err)
-              reject(err) // Reject the promise with the error
-              win.close()
-              return
-            }
-            if (tokens) {
-              oauth2Client.setCredentials(tokens)
-              resolve(tokens) // Resolve the promise with the tokens
-              win.close()
-            }
-          })
+          resolve(code)
+          win.close()
+          //     oauth2Client.getToken(code, (err, tokens) => {
+          //       if (err) {
+          //         console.error('Error retrieving tokens', err)
+          //         reject(err) // Reject the promise with the error
+          //         win.close()
+          //         return
+          //       }
+          //       if (tokens) {
+          //         oauth2Client.setCredentials(tokens)
+          //         resolve(tokens) // Resolve the promise with the tokens
+          //         win.close()
+          //       }
+          //     })
         }
       }
     })
