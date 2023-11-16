@@ -37,7 +37,7 @@ const createWindow = () => {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev) {
-    mainWindow.loadURL('http://localhost:5173')
+    mainWindow.loadURL(serverUrl)
   } else {
     // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     mainWindow.loadURL(serverUrl)
