@@ -1,6 +1,6 @@
 {
   "name": "boz.electron",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "Boz App",
   "main": "./out/main/index.js",
   "author": "example.com",
